@@ -40,19 +40,4 @@
 
 <script type="text/javascript">
 $("#pwd").pwd();
-var n = 100;
-var a = [];
-for(var i = 1;i <= n;i++) {
-	a[i] = i;
-}
-for(var i = 1;i <= n;i++) {
-   var tmp = a[i]
-   a[i] = a[rd(i,n)];
-   a[rd(i,n)] = tmp;
-}
-function rd(n,m){
-    var c = m-n+1;  
-    return Math.floor(Math.random() * c + n);
-}
-console.log(a);
 </script>
