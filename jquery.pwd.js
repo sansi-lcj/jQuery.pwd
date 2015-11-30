@@ -141,11 +141,13 @@
                                 return a+""+b;
                             });
                 */
-                var value = "";
+                var salt = "";
                 for(var idx = 0;idx < pwdInput.length;idx++) {
-                    value += $(pwdInput[idx]).val();
+                    salt += $(pwdInput[idx]).val();
                 }
+                var value = randomString();
                 $(target).val(value);
+                console.log({"value":value,"salt":salt});
                 $(pwdInput[active]).click();
             }
             function getValue() {
@@ -158,6 +160,16 @@
                         unBindKeyup(this);
                     });
                 });
+            }
+            function randomString(len) {
+                len = len || 32;
+                var $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                var maxPos = $chars.length;
+                var str = '';
+                for (i = 0; i < len; i++) {
+                    str += $chars.charAt(Math.floor(Math.random() * maxPos));
+                }
+                return str;
             }
             getValue();
 		}      
