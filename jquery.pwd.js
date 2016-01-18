@@ -58,7 +58,7 @@
                 var size = width / length;
                 //var height_one = height / length;
                 parent = $(target).parent();
-                var container = $("<div></div>").addClass("pwdcontainer");
+                var container = $("<div></div>").attr("id","pwdcontainer");
                 $(parent).append($(container));
                 $(target).hide();
                 for(var idx = 0;idx < length;idx++){
@@ -132,7 +132,7 @@
                 if(active > last) {
                     active = last
                 }
-                /*
+                /* map,reduce方法在IE8+里不支持
                 var value = pwdInput
                             .map(function(item){
                                 return $(item).val();
