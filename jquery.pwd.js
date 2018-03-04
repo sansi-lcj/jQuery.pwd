@@ -29,24 +29,39 @@
         104:"8",
         105:"9",
     };
-	var getIput = function(){
+
+	function getIput(){
 		return $("<input></input>")
 				.attr("maxlength","1")
                 .attr("type","password")
 				.addClass("pwdInput");
 	}
-    var getGap = function(){
+
+    function getGap(){
         return $("<i></i>")
                 .addClass("gap");
-    } 
+    }
+
+    function randomString(len) {
+        len = len || 32;
+        var $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var maxPos = $chars.length;
+        var str = '';
+        for (i = 0; i < len; i++) {
+            str += $chars.charAt(Math.floor(Math.random() * maxPos));
+        }
+        return str;
+    }
+
+    var pwdInput = [];
+    var active;
+    var parent;
+
 	$.fn.extend({      
-		pwd:function(){
-			var pwdInput = [];
-            var active;
-            var parent;
+		pwd:function(action){
+            var target = this;
             var first;
             var last;
-            var target = this;
             var lastTime = 0;
             function initPwdInput(target){
                 var length = $(target).attr("maxlength")>8? 8:$(target).attr("maxlength");
@@ -78,7 +93,7 @@
                 $(pwdInput[first]).addClass("first");
                 $(pwdInput[last]).addClass("last");
             }
-			initPwdInput(this);
+
             function bindKeyup(obj,callback) {
                 $(obj).bind("keyup",function(event){
                     if(lastTime == event.timeStamp){
@@ -119,12 +134,15 @@
                     }
                 });
             }
+
             function unBindKeyup(obj) {
                 $(obj).unbind("keyup");
             }
+
             function setActive(){
                 $(pwdInput[active]).focus();
             }
+
             function callback() {
                 if(active < 0 ){
                     active = 0;
@@ -147,9 +165,10 @@
                 }
                 var value = randomString();
                 $(target).val(value);
-                console.log({"value":value,"salt":salt});
+                //console.log({"value":value,"salt":salt});
                 $(pwdInput[active]).click();
             }
+
             function getValue() {
                 $(pwdInput).each(function(){
                     $(this).click(setActive);
@@ -161,17 +180,26 @@
                     });
                 });
             }
-            function randomString(len) {
-                len = len || 32;
-                var $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                var maxPos = $chars.length;
-                var str = '';
-                for (i = 0; i < len; i++) {
-                    str += $chars.charAt(Math.floor(Math.random() * maxPos));
+
+
+            switch (action){
+                case 'reset':{
+                    $('#pwdcontainer').find('input').val('');
+                    active = 0;
+                    break;
                 }
-                return str;
+                case 'destroy':{
+                    $('#pwdcontainer').after($(target).show()).remove();
+                    break;
+                }
+                case 'init':{
+                    initPwdInput(this);
+                    getValue();
+                    break;
+                }
             }
-            getValue();
+
+            return this;
 		}      
 	})      
 })(jQuery);
